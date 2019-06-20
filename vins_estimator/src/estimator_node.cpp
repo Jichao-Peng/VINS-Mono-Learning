@@ -33,13 +33,13 @@ std::mutex m_estimator;
 double latest_time;
 
 //IMU项[P,Q,B,Ba,Bg,a,g]
-Eigen::Vector3d tmp_P;
-Eigen::Quaterniond tmp_Q;
-Eigen::Vector3d tmp_V;
-Eigen::Vector3d tmp_Ba;
-Eigen::Vector3d tmp_Bg;
-Eigen::Vector3d acc_0;
-Eigen::Vector3d gyr_0;
+Eigen::Vector3d tmp_P;//位置
+Eigen::Quaterniond tmp_Q;//旋转
+Eigen::Vector3d tmp_V;//速度
+Eigen::Vector3d tmp_Ba;//加速度偏差
+Eigen::Vector3d tmp_Bg;//陀螺仪偏差
+Eigen::Vector3d acc_0;//加速度
+Eigen::Vector3d gyr_0;//角速度
 bool init_feature = 0;
 bool init_imu = 1;
 double last_imu_t = 0;
@@ -80,7 +80,7 @@ void predict(const sensor_msgs::ImuConstPtr &imu_msg)
     Eigen::Vector3d un_acc = 0.5 * (un_acc_0 + un_acc_1);
 
     tmp_P = tmp_P + dt * tmp_V + 0.5 * dt * dt * un_acc;
-    tmp_V = tmp_V + dt * un_acc;
+    tmp_V = tmp_V + dt * un_acc;//这里计算出来的值都是全局变量，文件最上面
 
     acc_0 = linear_acceleration;
     gyr_0 = angular_velocity;
@@ -100,9 +100,9 @@ void update()
     acc_0 = estimator.acc_0;
     gyr_0 = estimator.gyr_0;
 
-    queue<sensor_msgs::ImuConstPtr> tmp_imu_buf = imu_buf;
+    queue<sensor_msgs::ImuConstPtr> tmp_imu_buf = imu_buf;//imu_buf也是一个全局变量
     for (sensor_msgs::ImuConstPtr tmp_imu_msg; !tmp_imu_buf.empty(); tmp_imu_buf.pop())
-        predict(tmp_imu_buf.front());
+        predict(tmp_imu_buf.front());//就是调用中值积分公式不断对滑窗中的imui项进行更新
 
 }
 
@@ -124,6 +124,7 @@ getMeasurements()
             return measurements;
 
         //对齐标准：IMU最后一个数据的时间要大于第一个图像特征数据的时间
+        //如果IMU的最后一个时间都要比第一个图像特征数据时间的要慢的话，说明现在IMU来了，而图像还没来，这种情况只会发生在开始阶段，只能进行等待
         if (!(imu_buf.back()->header.stamp.toSec() > feature_buf.front()->header.stamp.toSec() + estimator.td))
         {
             //ROS_WARN("wait for imu, only should happen at the beginning");
@@ -132,6 +133,7 @@ getMeasurements()
         }
 
         //对齐标准：IMU第一个数据的时间要小于第一个图像特征数据的时间
+        //两个buf的第一个数据不对齐，图像特征的数据更靠前，就选择丢弃图像特征
         if (!(imu_buf.front()->header.stamp.toSec() < feature_buf.front()->header.stamp.toSec() + estimator.td))
         {
             ROS_WARN("throw img, only should happen at the beginning");
@@ -139,7 +141,7 @@ getMeasurements()
             continue; 
         }
 
-        sensor_msgs::PointCloudConstPtr img_msg = feature_buf.front();
+        sensor_msgs::PointCloudConstPtr img_msg = feature_buf.front();//就是图像特征，匹配起来的是图像特征和IMU数据
         feature_buf.pop();
 
         std::vector<sensor_msgs::ImuConstPtr> IMUs;
@@ -158,7 +160,7 @@ getMeasurements()
         if (IMUs.empty())
             ROS_WARN("no imu between two image");
 
-        measurements.emplace_back(IMUs, img_msg);
+        measurements.emplace_back(IMUs, img_msg);//这样就把图像和IMU对应起来了
     }
     return measurements;
 }
@@ -167,7 +169,7 @@ getMeasurements()
 void imu_callback(const sensor_msgs::ImuConstPtr &imu_msg)
 {
     //判断时间间隔是否为正
-    if (imu_msg->header.stamp.toSec() <= last_imu_t)
+    if (imu_msg->header.stamp.toSec() <= last_imu_t)//判断IMU的时间戳是否变化正常
     {
         //ROS_WARN("imu message ins disorder!");
         return;
@@ -210,7 +212,7 @@ void feature_callback(const sensor_msgs::PointCloudConstPtr &feature_msg)
     feature_buf.push(feature_msg);
     m_buf.unlock();
 
-    con.notify_one();
+    con.notify_one();//这里也有一个notify，所以就是收到图像特征和IMU数据都会启动一次process线程
 }
 
 //restart回调函数，收到restart时清空feature_buf和imu_buf，估计器重置，时间重置
@@ -238,7 +240,8 @@ void restart_callback(const std_msgs::BoolConstPtr &restart_msg)
     return;
 }
 
-//relocalization回调函数，将points_msg放入relo_buf        
+//relocalization回调函数，将points_msg放入relo_buf
+//回环调用的函数
 void relocalization_callback(const sensor_msgs::PointCloudConstPtr &points_msg)
 {
     //printf("relocalization callback! \n");
@@ -263,11 +266,11 @@ void process()
         
         std::unique_lock<std::mutex> lk(m_buf);
 
-        //等待上面两个接收数据完成就会被唤醒
+        //等待上面两个接收数据完成就会被唤醒，一个是图像特征，一个是IMU数据
         //在提取measurements时互斥锁m_buf会锁住，此时无法接收数据
         con.wait(lk, [&]
                  {
-            return (measurements = getMeasurements()).size() != 0;
+            return (measurements = getMeasurements()).size() != 0;//获取对其后的IMU和图像特征
                  });
         lk.unlock();
 
@@ -283,6 +286,7 @@ void process()
                 double img_t = img_msg->header.stamp.toSec() + estimator.td;
 
                 //发送IMU数据进行预积分
+                //TODO:这里为什么有两个积分公式？
                 if (t <= img_t)
                 { 
                     if (current_time < 0)
@@ -332,6 +336,7 @@ void process()
                 relo_buf.pop();
             }
 
+            //TODO：这个重定位的msg是干嘛用的？
             if (relo_msg != NULL)
             {
                 vector<Vector3d> match_points;
@@ -350,7 +355,7 @@ void process()
                 int frame_index;
                 frame_index = relo_msg->channels[0].values[7];
 
-                estimator.setReloFrame(frame_stamp, frame_index, match_points, relo_t, relo_r);
+                estimator.setReloFrame(frame_stamp, frame_index, match_points, relo_t, relo_r);//设置重定位帧
             }
 
             ROS_DEBUG("processing vision data with stamp %f \n", img_msg->header.stamp.toSec());

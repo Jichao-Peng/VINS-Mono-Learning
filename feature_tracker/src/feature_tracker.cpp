@@ -254,7 +254,7 @@ void FeatureTracker::rejectWithF()
 {
     if (forw_pts.size() >= 8)
     {
-        ROS_DEBUG("FM ransac begins");
+        ROS_DEBUG("FM ransac begins");//才哟ing的是ransac的方法
         TicToc t_f;
 
         vector<cv::Point2f> un_cur_pts(cur_pts.size()), un_forw_pts(forw_pts.size());

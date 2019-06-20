@@ -71,6 +71,7 @@ Eigen::Vector3d last_t(-100, -100, -100);
 double last_image_time = -1;
 
 //开始一个新的图像序列（地图合并功能）
+//其实就是把地图点、图像序列等数据全部清空
 void new_sequence()
 {
     printf("new sequence\n");
@@ -84,7 +85,7 @@ void new_sequence()
     //重新初始化，重新构建地图。
     posegraph.posegraph_visualization->reset();
     posegraph.publish();
-    m_buf.lock();
+    m_buf.lock();//每次对buf进行操作时会先进行多线程上锁操作
     while(!image_buf.empty())
         image_buf.pop();
     while(!point_buf.empty())
@@ -166,8 +167,8 @@ void imu_forward_callback(const nav_msgs::Odometry::ConstPtr &forward_msg)
 {
     if (VISUALIZE_IMU_FORWARD)
     {
-        Vector3d vio_t(forward_msg->pose.pose.position.x, forward_msg->pose.pose.position.y, forward_msg->pose.pose.position.z);
-        Quaterniond vio_q;
+        Vector3d vio_t(forward_msg->pose.pose.position.x, forward_msg->pose.pose.position.y, forward_msg->pose.pose.position.z);//预积分的t向量
+        Quaterniond vio_q;//预积分的四元数q
         vio_q.w() = forward_msg->pose.pose.orientation.w;
         vio_q.x() = forward_msg->pose.pose.orientation.x;
         vio_q.y() = forward_msg->pose.pose.orientation.y;

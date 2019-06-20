@@ -37,18 +37,18 @@ bool init_pub = 0;
 */
 void img_callback(const sensor_msgs::ImageConstPtr &img_msg)
 {
-    //判断是否是第一帧
+    //判断是否是第一帧,主要是记录了一下时间戳
     if(first_image_flag)
     {
         first_image_flag = false;
         first_image_time = img_msg->header.stamp.toSec();//记录图像帧的时间
-        last_image_time = img_msg->header.stamp.toSec();
+        last_image_time = img_msg->header.stamp.toSec();//上一帧的时间戳
         return;
     }
 
     // detect unstable camera stream
     // 通过判断时间间隔，有问题则restart
-    if (img_msg->header.stamp.toSec() - last_image_time > 1.0 || img_msg->header.stamp.toSec() < last_image_time)
+    if (img_msg->header.stamp.toSec() - last_image_time > 1.0 || img_msg->header.stamp.toSec() < last_image_time)//时间戳断开了就立马重启
     {
         ROS_WARN("image discontinue! reset the feature tracker!");
         first_image_flag = true; 
@@ -103,6 +103,7 @@ void img_callback(const sensor_msgs::ImageConstPtr &img_msg)
     {
         ROS_DEBUG("processing camera %d", i);
         if (i != 1 || !STEREO_TRACK)//单目
+            //[这个是往里走的入口]
             //FeatureTracker::readImage()函数读取图像数据进行处理
             trackerData[i].readImage(ptr->image.rowRange(ROW * i, ROW * (i + 1)), img_msg->header.stamp.toSec());
         else//双目
@@ -239,7 +240,7 @@ int main(int argc, char **argv)
     //设置logger的级别。 只有级别大于或等于level的日志记录消息才会得到处理。
     ros::console::set_logger_level(ROSCONSOLE_DEFAULT_NAME, ros::console::levels::Info);
     
-    //读取config->euroc->euroc_config.yaml中的一些配置参数
+    //读取config->euroc->euroc_config.yaml中的一些配置参数,确定相机和IMU的外参是否准确，不准确可以自己标定，确定IMU和时间是否同步，不同步可以设置补偿时间
     readParameters(n);
 
     //读取每个相机实例读取对应的相机内参
@@ -264,6 +265,7 @@ int main(int argc, char **argv)
 
     //订阅话题IMAGE_TOPIC(/cam0/image_raw),执行回调函数
     ros::Subscriber sub_img = n.subscribe(IMAGE_TOPIC, 100, img_callback);
+
 
     //发布feature，实例feature_points，跟踪的特征点，给后端优化用
     pub_img = n.advertise<sensor_msgs::PointCloud>("feature", 1000);
