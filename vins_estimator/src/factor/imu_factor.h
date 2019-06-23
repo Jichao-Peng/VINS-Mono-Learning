@@ -70,6 +70,7 @@ class IMUFactor : public ceres::SizedCostFunction<15, 7, 9, 7, 9>
         if (jacobians)
         {
             double sum_dt = pre_integration->sum_dt;
+            //下面这几个雅克比块可以直接从预计分的雅克比矩阵中直接提取的
             Eigen::Matrix3d dp_dba = pre_integration->jacobian.template block<3, 3>(O_P, O_BA);
             Eigen::Matrix3d dp_dbg = pre_integration->jacobian.template block<3, 3>(O_P, O_BG);
 

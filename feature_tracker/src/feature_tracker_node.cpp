@@ -151,15 +151,16 @@ void img_callback(const sensor_msgs::ImageConstPtr &img_msg)
         feature_points->header.frame_id = "world";
 
         vector<set<int>> hash_ids(NUM_OF_CAM);
-        for (int i = 0; i < NUM_OF_CAM; i++)
+        for (int i = 0; i < NUM_OF_CAM; i++)//相机个数一般都是1
         {
-            auto &un_pts = trackerData[i].cur_un_pts;
+            //注意下面这四个auto数据都是vector类型，都是一帧多对应的多个特征点
+            auto &un_pts = trackerData[i].cur_un_pts;//归一化相机坐标系下的坐标
             auto &cur_pts = trackerData[i].cur_pts;
-            auto &ids = trackerData[i].ids;
-            auto &pts_velocity = trackerData[i].pts_velocity;
-            for (unsigned int j = 0; j < ids.size(); j++)
+            auto &ids = trackerData[i].ids;//能够被跟踪到的特征点的id
+            auto &pts_velocity = trackerData[i].pts_velocity;//当前帧相对前一帧特征点沿x,y方向的像素移动速度
+            for (unsigned int j = 0; j < ids.size(); j++)//遍历所有的特征点
             {
-                if (trackerData[i].track_cnt[j] > 1)
+                if (trackerData[i].track_cnt[j] > 1)//当前帧中每个特征点被追踪的时间次数大于1
                 {
                     int p_id = ids[j];
                     hash_ids[i].insert(p_id);
@@ -169,7 +170,7 @@ void img_callback(const sensor_msgs::ImageConstPtr &img_msg)
                     p.z = 1;
 
                     feature_points->points.push_back(p);
-                    id_of_point.values.push_back(p_id * NUM_OF_CAM + i);
+                    id_of_point.values.push_back(p_id * NUM_OF_CAM + i);//存储的其实就是空间点的id
                     u_of_point.values.push_back(cur_pts[j].x);
                     v_of_point.values.push_back(cur_pts[j].y);
                     velocity_x_of_point.values.push_back(pts_velocity[j].x);
@@ -177,6 +178,7 @@ void img_callback(const sensor_msgs::ImageConstPtr &img_msg)
                 }
             }
         }
+       //不同的通道存储不同的特征
         feature_points->channels.push_back(id_of_point);
         feature_points->channels.push_back(u_of_point);
         feature_points->channels.push_back(v_of_point);

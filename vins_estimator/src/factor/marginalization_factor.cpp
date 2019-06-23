@@ -284,6 +284,7 @@ void MarginalizationInfo::marginalize()
     A = Arr - Arm * Amm_inv * Amr;
     b = brr - Arm * Amm_inv * bmm;
 
+    //下面就是更新先验残差项
     Eigen::SelfAdjointEigenSolver<Eigen::MatrixXd> saes2(A);
     Eigen::VectorXd S = Eigen::VectorXd((saes2.eigenvalues().array() > eps).select(saes2.eigenvalues().array(), 0));
     Eigen::VectorXd S_inv = Eigen::VectorXd((saes2.eigenvalues().array() > eps).select(saes2.eigenvalues().array().inverse(), 0));
@@ -291,6 +292,7 @@ void MarginalizationInfo::marginalize()
     Eigen::VectorXd S_sqrt = S.cwiseSqrt();
     Eigen::VectorXd S_inv_sqrt = S_inv.cwiseSqrt();
 
+    //这里相当于是求出了Marg之后的雅克比矩阵和残差项，用到后面的迭代求解状态变量
     linearized_jacobians = S_sqrt.asDiagonal() * saes2.eigenvectors().transpose();
     linearized_residuals = S_inv_sqrt.asDiagonal() * saes2.eigenvectors().transpose() * b;
     //std::cout << A << std::endl

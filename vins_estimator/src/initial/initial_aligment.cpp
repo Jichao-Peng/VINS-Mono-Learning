@@ -29,7 +29,7 @@ void solveGyroscopeBias(map<double, ImageFrame> &all_image_frame, Vector3d* Bgs)
         //R_ij = (R^c0_bk)^-1 * (R^c0_bk+1) 转换为四元数 q_ij = (q^c0_bk)^-1 * (q^c0_bk+1)
         Eigen::Quaterniond q_ij(frame_i->second.R.transpose() * frame_j->second.R);
         //tmp_A = J_j_bw
-        tmp_A = frame_j->second.pre_integration->jacobian.template block<3, 3>(O_R, O_BG);
+        tmp_A = frame_j->second.pre_integration->jacobian.template block<3, 3>(O_R, O_BG);//这个是再雅克比矩阵中取陀螺仪偏差的雅克比部分
         //tmp_b = 2 * (r^bk_bk+1)^-1 * (q^c0_bk)^-1 * (q^c0_bk+1)
         //      = 2 * (r^bk_bk+1)^-1 * q_ij
         tmp_b = 2 * (frame_j->second.pre_integration->delta_q.inverse() * q_ij).vec();

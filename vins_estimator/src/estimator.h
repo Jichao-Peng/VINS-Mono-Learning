@@ -87,7 +87,7 @@ class Estimator
     Vector3d back_P0, last_P, last_P0;
     std_msgs::Header Headers[(WINDOW_SIZE + 1)];
 
-    IntegrationBase *pre_integrations[(WINDOW_SIZE + 1)];
+    IntegrationBase *pre_integrations[(WINDOW_SIZE + 1)];//这个预计分值一共有窗口大小个
     Vector3d acc_0, gyr_0;
 
     //窗口中的dt,a,v

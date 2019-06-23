@@ -1,7 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="CMakeRunConfigurationManager" shouldGenerate="true" shouldDeleteObsolete="true">
-    <generated />
+    <generated>
+      <config projectName="feature_tracker" targetName="std_msgs_generate_messages_py" />
+      <config projectName="feature_tracker" targetName="roscpp_generate_messages_nodejs" />
+      <config projectName="feature_tracker" targetName="rosgraph_msgs_generate_messages_cpp" />
+      <config projectName="feature_tracker" targetName="rosgraph_msgs_generate_messages_py" />
+      <config projectName="feature_tracker" targetName="geometry_msgs_generate_messages_cpp" />
+      <config projectName="feature_tracker" targetName="sensor_msgs_generate_messages_py" />
+      <config projectName="feature_tracker" targetName="doxygen" />
+      <config projectName="feature_tracker" targetName="std_msgs_generate_messages_lisp" />
+      <config projectName="feature_tracker" targetName="roscpp_generate_messages_eus" />
+      <config projectName="feature_tracker" targetName="rosgraph_msgs_generate_messages_nodejs" />
+      <config projectName="feature_tracker" targetName="feature_tracker" />
+      <config projectName="feature_tracker" targetName="geometry_msgs_generate_messages_py" />
+      <config projectName="feature_tracker" targetName="sensor_msgs_generate_messages_eus" />
+      <config projectName="feature_tracker" targetName="std_msgs_generate_messages_cpp" />
+      <config projectName="feature_tracker" targetName="tests" />
+      <config projectName="feature_tracker" targetName="gtest_main" />
+      <config projectName="feature_tracker" targetName="download_extra_data" />
+      <config projectName="feature_tracker" targetName="geometry_msgs_generate_messages_lisp" />
+      <config projectName="feature_tracker" targetName="geometry_msgs_generate_messages_nodejs" />
+      <config projectName="feature_tracker" targetName="gmock_main" />
+      <config projectName="feature_tracker" targetName="roscpp_generate_messages_py" />
+      <config projectName="feature_tracker" targetName="run_tests" />
+      <config projectName="feature_tracker" targetName="rosgraph_msgs_generate_messages_eus" />
+      <config projectName="feature_tracker" targetName="rosgraph_msgs_generate_messages_lisp" />
+      <config projectName="feature_tracker" targetName="geometry_msgs_generate_messages_eus" />
+      <config projectName="feature_tracker" targetName="sensor_msgs_generate_messages_lisp" />
+      <config projectName="feature_tracker" targetName="clean_test_results" />
+      <config projectName="feature_tracker" targetName="std_msgs_generate_messages_nodejs" />
+      <config projectName="feature_tracker" targetName="gtest" />
+      <config projectName="feature_tracker" targetName="roscpp_generate_messages_cpp" />
+      <config projectName="feature_tracker" targetName="roscpp_generate_messages_lisp" />
+      <config projectName="feature_tracker" targetName="gmock" />
+      <config projectName="feature_tracker" targetName="sensor_msgs_generate_messages_cpp" />
+      <config projectName="feature_tracker" targetName="std_msgs_generate_messages_eus" />
+      <config projectName="feature_tracker" targetName="sensor_msgs_generate_messages_nodejs" />
+    </generated>
   </component>
   <component name="CMakeSettings">
     <configurations>
@@ -9,7 +45,23 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2aa2fe8c-0ca6-4e4b-8169-c21c2fd26e30" name="Default Changelist" comment="" />
+    <list default="true" id="2aa2fe8c-0ca6-4e4b-8169-c21c2fd26e30" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/feature_tracker/src/feature_tracker_node.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/feature_tracker/src/feature_tracker_node.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pose_graph/src/keyframe.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/pose_graph/src/keyframe.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pose_graph/src/pose_graph.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/pose_graph/src/pose_graph.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pose_graph/src/pose_graph.h" beforeDir="false" afterPath="$PROJECT_DIR$/pose_graph/src/pose_graph.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pose_graph/src/pose_graph_node.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/pose_graph/src/pose_graph_node.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vins_estimator/src/estimator.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/vins_estimator/src/estimator.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vins_estimator/src/estimator.h" beforeDir="false" afterPath="$PROJECT_DIR$/vins_estimator/src/estimator.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vins_estimator/src/estimator_node.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/vins_estimator/src/estimator_node.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vins_estimator/src/factor/imu_factor.h" beforeDir="false" afterPath="$PROJECT_DIR$/vins_estimator/src/factor/imu_factor.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vins_estimator/src/factor/integration_base.h" beforeDir="false" afterPath="$PROJECT_DIR$/vins_estimator/src/factor/integration_base.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vins_estimator/src/factor/marginalization_factor.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/vins_estimator/src/factor/marginalization_factor.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vins_estimator/src/feature_manager.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/vins_estimator/src/feature_manager.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vins_estimator/src/initial/initial_aligment.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/vins_estimator/src/initial/initial_aligment.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vins_estimator/src/initial/initial_sfm.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/vins_estimator/src/initial/initial_sfm.cpp" afterDir="false" />
+    </list>
     <ignored path="$PROJECT_DIR$/feature_tracker/cmake-build-debug/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -20,20 +72,24 @@
   <component name="ClangdSettings">
     <option name="formatViaClangd" value="false" />
   </component>
+  <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Debug" />
   <component name="FileEditorManager">
-    <leaf>
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/feature_tracker/CMakeLists.txt">
-          <provider selected="true" editor-type-id="text-editor" />
+        <entry file="file://$PROJECT_DIR$/vins_estimator/src/estimator_node.cpp">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="285">
+              <caret line="15" column="20" lean-forward="true" selection-start-line="15" selection-start-column="20" selection-end-line="15" selection-end-column="20" />
+              <folding>
+                <element signature="e#0#18#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file:///opt/ros/melodic/share/catkin/cmake/catkinConfig.cmake">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="196">
-              <caret line="82" selection-start-line="82" selection-end-line="82" />
-            </state>
-          </provider>
+        <entry file="file://$PROJECT_DIR$/vins_estimator/src/estimator.cpp">
+          <provider selected="true" editor-type-id="text-editor" />
         </entry>
       </file>
     </leaf>
@@ -41,49 +97,59 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="ProjectFrameBounds">
-    <option name="x" value="67" />
-    <option name="y" value="27" />
-    <option name="width" value="927" />
-    <option name="height" value="1053" />
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="678" />
+    <option name="y" value="294" />
+    <option name="width" value="940" />
+    <option name="height" value="1052" />
   </component>
   <component name="ProjectView">
     <navigator proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
             <path>
               <item name="feature_tracker" type="b2602c69:ProjectViewProjectNode" />
+              <item name="VINS-Mono-Learning" type="47feb1d3:ProjectViewModuleNode" />
+            </path>
+            <path>
+              <item name="feature_tracker" type="b2602c69:ProjectViewProjectNode" />
+              <item name="VINS-Mono-Learning" type="47feb1d3:ProjectViewModuleNode" />
               <item name="VINS-Mono-Learning" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="feature_tracker" type="b2602c69:ProjectViewProjectNode" />
+              <item name="VINS-Mono-Learning" type="47feb1d3:ProjectViewModuleNode" />
               <item name="VINS-Mono-Learning" type="462c0819:PsiDirectoryNode" />
-              <item name="feature_tracker" type="462c0819:PsiDirectoryNode" />
+              <item name="support_files" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="feature_tracker" type="b2602c69:ProjectViewProjectNode" />
-              <item name="VINS-Mono-Learning" type="462c0819:PsiDirectoryNode" />
-              <item name="pose_graph" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="feature_tracker" type="b2602c69:ProjectViewProjectNode" />
+              <item name="VINS-Mono-Learning" type="47feb1d3:ProjectViewModuleNode" />
               <item name="VINS-Mono-Learning" type="462c0819:PsiDirectoryNode" />
               <item name="vins_estimator" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="feature_tracker" type="b2602c69:ProjectViewProjectNode" />
+              <item name="VINS-Mono-Learning" type="47feb1d3:ProjectViewModuleNode" />
+              <item name="VINS-Mono-Learning" type="462c0819:PsiDirectoryNode" />
+              <item name="vins_estimator" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/.." />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
   </component>
@@ -99,6 +165,220 @@
       </list>
     </option>
   </component>
+  <component name="RunManager" selected="CMake Application.feature_tracker">
+    <configuration name="clean_test_results" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="feature_tracker" TARGET_NAME="clean_test_results" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="download_extra_data" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="feature_tracker" TARGET_NAME="download_extra_data" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="doxygen" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="feature_tracker" TARGET_NAME="doxygen" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="feature_tracker" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="feature_tracker" TARGET_NAME="feature_tracker" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="feature_tracker" RUN_TARGET_NAME="feature_tracker">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="geometry_msgs_generate_messages_cpp" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="feature_tracker" TARGET_NAME="geometry_msgs_generate_messages_cpp" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="geometry_msgs_generate_messages_eus" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="feature_tracker" TARGET_NAME="geometry_msgs_generate_messages_eus" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="geometry_msgs_generate_messages_lisp" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="feature_tracker" TARGET_NAME="geometry_msgs_generate_messages_lisp" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="geometry_msgs_generate_messages_nodejs" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="feature_tracker" TARGET_NAME="geometry_msgs_generate_messages_nodejs" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="geometry_msgs_generate_messages_py" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="feature_tracker" TARGET_NAME="geometry_msgs_generate_messages_py" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="gmock" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="feature_tracker" TARGET_NAME="gmock" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="gmock_main" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="feature_tracker" TARGET_NAME="gmock_main" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="gtest" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="feature_tracker" TARGET_NAME="gtest" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="gtest_main" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="feature_tracker" TARGET_NAME="gtest_main" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="roscpp_generate_messages_cpp" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="feature_tracker" TARGET_NAME="roscpp_generate_messages_cpp" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="roscpp_generate_messages_eus" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="feature_tracker" TARGET_NAME="roscpp_generate_messages_eus" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="roscpp_generate_messages_lisp" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="feature_tracker" TARGET_NAME="roscpp_generate_messages_lisp" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="roscpp_generate_messages_nodejs" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="feature_tracker" TARGET_NAME="roscpp_generate_messages_nodejs" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="roscpp_generate_messages_py" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="feature_tracker" TARGET_NAME="roscpp_generate_messages_py" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="rosgraph_msgs_generate_messages_cpp" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="feature_tracker" TARGET_NAME="rosgraph_msgs_generate_messages_cpp" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="rosgraph_msgs_generate_messages_eus" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="feature_tracker" TARGET_NAME="rosgraph_msgs_generate_messages_eus" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="rosgraph_msgs_generate_messages_lisp" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="feature_tracker" TARGET_NAME="rosgraph_msgs_generate_messages_lisp" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="rosgraph_msgs_generate_messages_nodejs" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="feature_tracker" TARGET_NAME="rosgraph_msgs_generate_messages_nodejs" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="rosgraph_msgs_generate_messages_py" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="feature_tracker" TARGET_NAME="rosgraph_msgs_generate_messages_py" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="run_tests" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="feature_tracker" TARGET_NAME="run_tests" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="sensor_msgs_generate_messages_cpp" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="feature_tracker" TARGET_NAME="sensor_msgs_generate_messages_cpp" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="sensor_msgs_generate_messages_eus" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="feature_tracker" TARGET_NAME="sensor_msgs_generate_messages_eus" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="sensor_msgs_generate_messages_lisp" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="feature_tracker" TARGET_NAME="sensor_msgs_generate_messages_lisp" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="sensor_msgs_generate_messages_nodejs" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="feature_tracker" TARGET_NAME="sensor_msgs_generate_messages_nodejs" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="sensor_msgs_generate_messages_py" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="feature_tracker" TARGET_NAME="sensor_msgs_generate_messages_py" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="std_msgs_generate_messages_cpp" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="feature_tracker" TARGET_NAME="std_msgs_generate_messages_cpp" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="std_msgs_generate_messages_eus" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="feature_tracker" TARGET_NAME="std_msgs_generate_messages_eus" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="std_msgs_generate_messages_lisp" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="feature_tracker" TARGET_NAME="std_msgs_generate_messages_lisp" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="std_msgs_generate_messages_nodejs" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="feature_tracker" TARGET_NAME="std_msgs_generate_messages_nodejs" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="std_msgs_generate_messages_py" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="feature_tracker" TARGET_NAME="std_msgs_generate_messages_py" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="tests" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="feature_tracker" TARGET_NAME="tests" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <list>
+      <item itemvalue="CMake Application.clean_test_results" />
+      <item itemvalue="CMake Application.download_extra_data" />
+      <item itemvalue="CMake Application.doxygen" />
+      <item itemvalue="CMake Application.feature_tracker" />
+      <item itemvalue="CMake Application.geometry_msgs_generate_messages_cpp" />
+      <item itemvalue="CMake Application.geometry_msgs_generate_messages_eus" />
+      <item itemvalue="CMake Application.geometry_msgs_generate_messages_lisp" />
+      <item itemvalue="CMake Application.geometry_msgs_generate_messages_nodejs" />
+      <item itemvalue="CMake Application.geometry_msgs_generate_messages_py" />
+      <item itemvalue="CMake Application.roscpp_generate_messages_cpp" />
+      <item itemvalue="CMake Application.roscpp_generate_messages_eus" />
+      <item itemvalue="CMake Application.roscpp_generate_messages_lisp" />
+      <item itemvalue="CMake Application.roscpp_generate_messages_nodejs" />
+      <item itemvalue="CMake Application.roscpp_generate_messages_py" />
+      <item itemvalue="CMake Application.rosgraph_msgs_generate_messages_cpp" />
+      <item itemvalue="CMake Application.rosgraph_msgs_generate_messages_eus" />
+      <item itemvalue="CMake Application.rosgraph_msgs_generate_messages_lisp" />
+      <item itemvalue="CMake Application.rosgraph_msgs_generate_messages_nodejs" />
+      <item itemvalue="CMake Application.rosgraph_msgs_generate_messages_py" />
+      <item itemvalue="CMake Application.run_tests" />
+      <item itemvalue="CMake Application.sensor_msgs_generate_messages_cpp" />
+      <item itemvalue="CMake Application.sensor_msgs_generate_messages_eus" />
+      <item itemvalue="CMake Application.sensor_msgs_generate_messages_lisp" />
+      <item itemvalue="CMake Application.sensor_msgs_generate_messages_nodejs" />
+      <item itemvalue="CMake Application.sensor_msgs_generate_messages_py" />
+      <item itemvalue="CMake Application.std_msgs_generate_messages_cpp" />
+      <item itemvalue="CMake Application.std_msgs_generate_messages_eus" />
+      <item itemvalue="CMake Application.std_msgs_generate_messages_lisp" />
+      <item itemvalue="CMake Application.std_msgs_generate_messages_nodejs" />
+      <item itemvalue="CMake Application.std_msgs_generate_messages_py" />
+      <item itemvalue="CMake Application.tests" />
+      <item itemvalue="CMake Application.gmock" />
+      <item itemvalue="CMake Application.gmock_main" />
+      <item itemvalue="CMake Application.gtest" />
+      <item itemvalue="CMake Application.gtest_main" />
+    </list>
+  </component>
   <component name="SvnConfiguration">
     <configuration />
   </component>
@@ -110,24 +390,20 @@
       <option name="presentableId" value="Default" />
       <updated>1560822682941</updated>
       <workItem from="1560822685160" duration="299000" />
+      <workItem from="1561029484099" duration="114000" />
+      <workItem from="1561255251845" duration="86000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="299000" />
+    <option name="totallyTimeSpent" value="499000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="67" y="27" width="927" height="1053" extended-state="0" />
-    <editor active="true" />
+    <frame x="65" y="-4" width="1855" height="1084" extended-state="6" />
     <layout>
-      <window_info id="Favorites" side_tool="true" />
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.24971624" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.25262576" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
-      <window_info anchor="bottom" id="Database Changes" />
-      <window_info anchor="bottom" id="Version Control" />
-      <window_info anchor="bottom" id="Terminal" />
-      <window_info anchor="bottom" id="Event Log" side_tool="true" />
-      <window_info active="true" anchor="bottom" id="CMake" visible="true" weight="0.32900432" />
+      <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
       <window_info anchor="bottom" id="Run" order="2" />
@@ -135,25 +411,37 @@
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info anchor="right" id="Database" />
+      <window_info anchor="bottom" id="Database Changes" order="7" />
+      <window_info anchor="bottom" id="Terminal" order="8" />
+      <window_info anchor="bottom" id="Event Log" order="9" side_tool="true" />
+      <window_info anchor="bottom" id="Version Control" order="10" />
+      <window_info anchor="bottom" id="CMake" order="11" weight="0.32846716" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="right" id="Database" order="3" />
     </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
   </component>
   <component name="editorHistoryManager">
+    <entry file="file:///opt/ros/melodic/share/catkin/cmake/catkinConfig.cmake" />
     <entry file="file://$PROJECT_DIR$/feature_tracker/CMakeLists.txt">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file:///opt/ros/melodic/share/catkin/cmake/catkinConfig.cmake">
+    <entry file="file://$PROJECT_DIR$/vins_estimator/src/estimator_node.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="196">
-          <caret line="82" selection-start-line="82" selection-end-line="82" />
+        <state relative-caret-position="285">
+          <caret line="15" column="20" lean-forward="true" selection-start-line="15" selection-start-column="20" selection-end-line="15" selection-end-column="20" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
         </state>
       </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/vins_estimator/src/estimator.cpp">
+      <provider selected="true" editor-type-id="text-editor" />
     </entry>
   </component>
 </project>

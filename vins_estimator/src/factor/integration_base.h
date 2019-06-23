@@ -36,8 +36,8 @@ class IntegrationBase
     {
         dt_buf.push_back(dt);
         acc_buf.push_back(acc);
-        gyr_buf.push_back(gyr);
-        propagate(dt, acc, gyr);
+        gyr_buf.push_back(gyr);//会先都存到buf里去
+        propagate(dt, acc, gyr);//这个里面会利用中指积分计算预积分，并传递雅克比矩阵和方差矩阵
     }
 
     //优化过程中Bias会更新，需要根据新的bias重新计算预积分
@@ -71,6 +71,7 @@ class IntegrationBase
                             Eigen::Vector3d &result_linearized_ba, Eigen::Vector3d &result_linearized_bg, bool update_jacobian)
     {
         //ROS_INFO("midpoint integration");
+        //下面这一坨对应的论文中的公式7,这里进行预积分主要为了进行雅克比矩阵的跟新
         Vector3d un_acc_0 = delta_q * (_acc_0 - linearized_ba);
         Vector3d un_gyr = 0.5 * (_gyr_0 + _gyr_1) - linearized_bg;
         result_delta_q = delta_q * Quaterniond(1, un_gyr(0) * _dt / 2, un_gyr(1) * _dt / 2, un_gyr(2) * _dt / 2);
@@ -81,6 +82,7 @@ class IntegrationBase
         result_linearized_ba = linearized_ba;
         result_linearized_bg = linearized_bg;         
 
+        //下面就更新雅克比矩阵，对应论文中的公式9，公式10和公式11，不同的是，这里计算的是离散的形式，而且论文中的公示9只是起了推到作用并没有在这里实际计算
         if(update_jacobian)
         {
             Vector3d w_x = 0.5 * (_gyr_0 + _gyr_1) - linearized_bg;
@@ -99,7 +101,7 @@ class IntegrationBase
                 a_1_x(2), 0, -a_1_x(0),
                 -a_1_x(1), a_1_x(0), 0;
 
-            MatrixXd F = MatrixXd::Zero(15, 15);
+            MatrixXd F = MatrixXd::Zero(15, 15);//这里可以看出来F是一个15*15的矩阵
             F.block<3, 3>(0, 0) = Matrix3d::Identity();
             F.block<3, 3>(0, 3) = -0.25 * delta_q.toRotationMatrix() * R_a_0_x * _dt * _dt + 
                                   -0.25 * result_delta_q.toRotationMatrix() * R_a_1_x * (Matrix3d::Identity() - R_w_x * _dt) * _dt * _dt;
@@ -117,7 +119,7 @@ class IntegrationBase
             F.block<3, 3>(12, 12) = Matrix3d::Identity();
             //cout<<"A"<<endl<<A<<endl;
 
-            MatrixXd V = MatrixXd::Zero(15,18);
+            MatrixXd V = MatrixXd::Zero(15,18);//V是一个15*18的矩阵
             V.block<3, 3>(0, 0) =  0.25 * delta_q.toRotationMatrix() * _dt * _dt;
             V.block<3, 3>(0, 3) =  0.25 * -result_delta_q.toRotationMatrix() * R_a_1_x  * _dt * _dt * 0.5 * _dt;
             V.block<3, 3>(0, 6) =  0.25 * result_delta_q.toRotationMatrix() * _dt * _dt;
@@ -134,7 +136,7 @@ class IntegrationBase
             //step_jacobian = F;
             //step_V = V;
             jacobian = F * jacobian;
-            covariance = F * covariance * F.transpose() + V * noise * V.transpose();
+            covariance = F * covariance * F.transpose() + V * noise * V.transpose();//雅克比和方差矩阵都是全局变量，是不断进行传递的
         }
 
     }
@@ -154,8 +156,8 @@ class IntegrationBase
     void propagate(double _dt, const Eigen::Vector3d &_acc_1, const Eigen::Vector3d &_gyr_1)
     {
         dt = _dt;
-        acc_1 = _acc_1;
-        gyr_1 = _gyr_1;
+        acc_1 = _acc_1;//加速度
+        gyr_1 = _gyr_1;//角速度
         Vector3d result_delta_p;
         Quaterniond result_delta_q;
         Vector3d result_delta_v;
@@ -169,14 +171,14 @@ class IntegrationBase
 
         //checkJacobian(_dt, acc_0, gyr_0, acc_1, gyr_1, delta_p, delta_q, delta_v,
         //                    linearized_ba, linearized_bg);
-        delta_p = result_delta_p;
+        delta_p = result_delta_p;//位置速度和角度的积分不断进行传递
         delta_q = result_delta_q;
         delta_v = result_delta_v;
         linearized_ba = result_linearized_ba;
         linearized_bg = result_linearized_bg;
         delta_q.normalize();
         sum_dt += dt;
-        acc_0 = acc_1;
+        acc_0 = acc_1;//中值积分需要记录上一时刻的加速度和角速度
         gyr_0 = gyr_1;  
      
     }

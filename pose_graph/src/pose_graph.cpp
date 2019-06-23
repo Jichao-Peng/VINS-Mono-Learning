@@ -54,7 +54,7 @@ void PoseGraph::addKeyFrame(KeyFrame* cur_kf, bool flag_detect_loop)
     Matrix3d vio_R_cur;
 
     //建一个新的图像序列
-    if (sequence_cnt != cur_kf->sequence)
+    if (sequence_cnt != cur_kf->sequence)//关键帧的sequence是由关键帧构造时获得的，构造用的sequence变量是一个全局变量
     {
         sequence_cnt++;
         sequence_loop.push_back(0);
@@ -70,7 +70,7 @@ void PoseGraph::addKeyFrame(KeyFrame* cur_kf, bool flag_detect_loop)
     cur_kf->getVioPose(vio_P_cur, vio_R_cur);
     vio_P_cur = w_r_vio * vio_P_cur + w_t_vio;
     vio_R_cur = w_r_vio * vio_R_cur;
-    cur_kf->updateVioPose(vio_P_cur, vio_R_cur);
+    cur_kf->updateVioPose(vio_P_cur, vio_R_cur);//转到世界坐标系下
     cur_kf->index = global_index;
     global_index++;
 	int loop_index = -1;
@@ -111,7 +111,7 @@ void PoseGraph::addKeyFrame(KeyFrame* cur_kf, bool flag_detect_loop)
             relative_t = cur_kf->getLoopRelativeT();
             relative_q = (cur_kf->getLoopRelativeQ()).toRotationMatrix();
 
-            //重新计算当前帧位姿w_P_cur、w_R_cur
+            //重新计算当前帧位姿w_P_cur、w_R_cur,即世界坐标系下的位姿
             w_P_cur = w_R_old * relative_t + w_P_old;
             w_R_cur = w_R_old * relative_q;
             
@@ -450,7 +450,7 @@ void PoseGraph::addKeyFrameIntoVoc(KeyFrame* keyframe)
     db.add(keyframe->brief_descriptors);
 }
 
-//四自由度位姿图优化
+//四自由度位姿图优化,这儿开了一个线程，一直在运行
 void PoseGraph::optimize4DoF()
 {
     while(true)

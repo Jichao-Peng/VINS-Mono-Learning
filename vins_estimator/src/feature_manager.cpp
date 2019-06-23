@@ -218,9 +218,9 @@ VectorXd FeatureManager::getDepthVector()
 }
 
 //对特征点进行三角化求深度（SVD分解）
-void FeatureManager::triangulate(Vector3d Ps[], Vector3d tic[], Matrix3d ric[])
+void FeatureManager::triangulate(Vector3d Ps[], Vector3d tic[], Matrix3d ric[])//tic和ric都只用到了第一个变量,应该是第一个点的平移和旋转，都初始化为0了
 {
-    for (auto &it_per_id : feature)
+    for (auto &it_per_id : feature)//遍历当前的所有的特征点
     {
         it_per_id.used_num = it_per_id.feature_per_frame.size();
         if (!(it_per_id.used_num >= 2 && it_per_id.start_frame < WINDOW_SIZE - 2))
@@ -228,7 +228,7 @@ void FeatureManager::triangulate(Vector3d Ps[], Vector3d tic[], Matrix3d ric[])
 
         if (it_per_id.estimated_depth > 0)
             continue;
-        int imu_i = it_per_id.start_frame, imu_j = imu_i - 1;
+        int imu_i = it_per_id.start_frame, imu_j = imu_i - 1;//imu_i某一个特征点被观察到的第一个图像帧的ID
 
         ROS_ASSERT(NUM_OF_CAM == 1);
         Eigen::MatrixXd svd_A(2 * it_per_id.feature_per_frame.size(), 4);
@@ -241,13 +241,13 @@ void FeatureManager::triangulate(Vector3d Ps[], Vector3d tic[], Matrix3d ric[])
         P0.leftCols<3>() = Eigen::Matrix3d::Identity();
         P0.rightCols<1>() = Eigen::Vector3d::Zero();
 
-        for (auto &it_per_frame : it_per_id.feature_per_frame)
+        for (auto &it_per_frame : it_per_id.feature_per_frame)//每个特征点由多个图像帧看到，这个it_per_frame是这一个特征点在不同图像帧下的特征
         {
             imu_j++;
             //R t为第j帧相机坐标系到第i帧相机坐标系的变换矩阵，P为i到j的变换矩阵
-            Eigen::Vector3d t1 = Ps[imu_j] + Rs[imu_j] * tic[0];
+            Eigen::Vector3d t1 = Ps[imu_j] + Rs[imu_j] * tic[0];//第R_1和t_1是第j帧在世界坐标系下的位姿
             Eigen::Matrix3d R1 = Rs[imu_j] * ric[0];
-            Eigen::Vector3d t = R0.transpose() * (t1 - t0);
+            Eigen::Vector3d t = R0.transpose() * (t1 - t0);//R和t是从第i帧到第j帧的变换位姿
             Eigen::Matrix3d R = R0.transpose() * R1;
             Eigen::Matrix<double, 3, 4> P;
             P.leftCols<3>() = R.transpose();
@@ -257,7 +257,7 @@ void FeatureManager::triangulate(Vector3d Ps[], Vector3d tic[], Matrix3d ric[])
             //AX=0      A = [A(2*i) A(2*i+1) A(2*i+2) A(2*i+3) ...]^T
             //A(2*i)   = x(i) * P3 - z(i) * P1
             //A(2*i+1) = y(i) * P3 - z(i) * P2
-            svd_A.row(svd_idx++) = f[0] * P.row(2) - f[2] * P.row(0);
+            svd_A.row(svd_idx++) = f[0] * P.row(2) - f[2] * P.row(0);//这里是构造三角化用的SVD分解矩阵，因为是归一化的齐次坐标，因此后面乘以了f[2]
             svd_A.row(svd_idx++) = f[1] * P.row(2) - f[2] * P.row(1);
 
             if (imu_i == imu_j)
@@ -266,7 +266,7 @@ void FeatureManager::triangulate(Vector3d Ps[], Vector3d tic[], Matrix3d ric[])
         //对A的SVD分解得到其最小奇异值对应的单位奇异向量(x,y,z,w)，深度为z/w
         ROS_ASSERT(svd_idx == svd_A.rows());
         Eigen::Vector4d svd_V = Eigen::JacobiSVD<Eigen::MatrixXd>(svd_A, Eigen::ComputeThinV).matrixV().rightCols<1>();
-        double svd_method = svd_V[2] / svd_V[3];
+        double svd_method = svd_V[2] / svd_V[3];//深度为z/w，这个深度应该是再开始观测帧坐标系下的空间点坐标z
         //it_per_id->estimated_depth = -b / A;
         //it_per_id->estimated_depth = svd_V[2] / svd_V[3];
 

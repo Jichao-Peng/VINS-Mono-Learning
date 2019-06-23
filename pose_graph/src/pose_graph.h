@@ -59,7 +59,7 @@ public:
 	double yaw_drift;
 	Matrix3d r_drift;
 
-	// cur sequence frame  ---->  world frame( base sequence or first sequence)
+	// cur sequence frame  ---->  world frame( base sequence or first sequence) 当前帧到世界坐标系的变换
 	Vector3d w_t_vio;
 	Matrix3d w_r_vio;
 

@@ -325,7 +325,7 @@ void process()
         m_buf.lock();
         if(!image_buf.empty() && !point_buf.empty() && !pose_buf.empty())
         {
-            if (image_buf.front()->header.stamp.toSec() > pose_buf.front()->header.stamp.toSec())
+            if (image_buf.front()->header.stamp.toSec() > pose_buf.front()->header.stamp.toSec())//时间戳越小的越靠前
             {
                 pose_buf.pop();
                 printf("throw pose at beginning\n");
@@ -342,7 +342,7 @@ void process()
                 pose_buf.pop();
                 while (!pose_buf.empty())
                     pose_buf.pop();
-                while (image_buf.front()->header.stamp.toSec() < pose_msg->header.stamp.toSec())
+                while (image_buf.front()->header.stamp.toSec() < pose_msg->header.stamp.toSec())//这个pose是关键帧的pose里面包括了关键帧的时间戳
                     image_buf.pop();
                 image_msg = image_buf.front();
                 image_buf.pop();
@@ -355,6 +355,7 @@ void process()
         }
         m_buf.unlock();
 
+        //到这里就死取到了相同时间戳的位姿、点云和图片
         if (pose_msg != NULL)
         {
             //printf(" pose time %f \n", pose_msg->header.stamp.toSec());
@@ -407,7 +408,7 @@ void process()
                                      pose_msg->pose.pose.orientation.y,
                                      pose_msg->pose.pose.orientation.z).toRotationMatrix();
             
-            //将距上一关键帧距离（平移向量的模）超过SKIP_DIS的图像创建为关键帧
+            //将距上一关键帧距离（平移向量的模）超过SKIP_DIS的图像创建为关键帧，这里相当于有一个简单地筛选
             if((T - last_t).norm() > SKIP_DIS)
             {
                 vector<cv::Point3f> point_3d; 
@@ -415,7 +416,7 @@ void process()
                 vector<cv::Point2f> point_2d_normal;
                 vector<double> point_id;
 
-                for (unsigned int i = 0; i < point_msg->points.size(); i++)
+                for (unsigned int i = 0; i < point_msg->points.size(); i++)//发过来的point包括了空间点以及归一化平面上的坐标和图像上的坐标
                 {
                     cv::Point3f p_3d;
                     p_3d.x = point_msg->points[i].x;
@@ -437,6 +438,7 @@ void process()
                     //printf("u %f, v %f \n", p_2d_uv.x, p_2d_uv.y);
                 }
 
+                //构建真正的keyframe,在构造函数中进行描述子提取
                 KeyFrame* keyframe = new KeyFrame(pose_msg->header.stamp.toSec(), frame_index, T, R, image,
                                    point_3d, point_2d_uv, point_2d_normal, point_id, sequence);   
                 m_process.lock();

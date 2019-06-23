@@ -33,6 +33,7 @@ std::mutex m_estimator;
 double latest_time;
 
 //IMU项[P,Q,B,Ba,Bg,a,g]
+//这里是当前帧融合完之后的结果，也是发布到rviz里面显示的结果
 Eigen::Vector3d tmp_P;//位置
 Eigen::Quaterniond tmp_Q;//旋转
 Eigen::Vector3d tmp_V;//速度
@@ -188,7 +189,7 @@ void imu_callback(const sensor_msgs::ImuConstPtr &imu_msg)
     {
         //构造互斥锁m_state，析构时解锁
         std::lock_guard<std::mutex> lg(m_state);
-        predict(imu_msg);//递推得到IMU的PQV
+        predict(imu_msg);//递推得到IMU的PQV--------------------直接进行中值积分哦！积分后的值存在上面的全局变量处
         std_msgs::Header header = imu_msg->header;
         header.frame_id = "world";
 
@@ -336,7 +337,7 @@ void process()
                 relo_buf.pop();
             }
 
-            //TODO：这个重定位的msg是干嘛用的？
+            //这个msg是从pose graph传来的，检测到的闭环帧和当前帧之间的匹配点
             if (relo_msg != NULL)
             {
                 vector<Vector3d> match_points;
@@ -363,6 +364,10 @@ void process()
             TicToc t_s;
 
             //建立每个特征点的(camera_id,[x,y,z,u,v,vx,vy])s的map，索引为feature_id
+            //下面这个数据结构是这样的
+            //第一个int是Feature的ID
+            //第二个int是Camera的ID
+            //第三个Eigen是xyz指的是特征点的空间坐标，uv是像素值，vx和vy是像素的速度
             map<int, vector<pair<int, Eigen::Matrix<double, 7, 1>>>> image;
             for (unsigned int i = 0; i < img_msg->points.size(); i++)
             {
@@ -379,7 +384,7 @@ void process()
                 ROS_ASSERT(z == 1);
                 Eigen::Matrix<double, 7, 1> xyz_uv_velocity;
                 xyz_uv_velocity << x, y, z, p_u, p_v, velocity_x, velocity_y;
-                image[feature_id].emplace_back(camera_id,  xyz_uv_velocity);
+                image[feature_id].emplace_back(camera_id,  xyz_uv_velocity);//这里的camera_id应该始终都是1？
             }
             
             //处理图像特征

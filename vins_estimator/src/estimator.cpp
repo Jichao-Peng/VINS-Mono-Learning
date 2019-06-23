@@ -93,26 +93,28 @@ void Estimator::processIMU(double dt, const Vector3d &linear_acceleration, const
         gyr_0 = angular_velocity;
     }
 
-    if (!pre_integrations[frame_count])
+    if (!pre_integrations[frame_count])//这里就是说，如果这一帧还没有开始预计分就新建一个预计分项
     {
-        pre_integrations[frame_count] = new IntegrationBase{acc_0, gyr_0, Bas[frame_count], Bgs[frame_count]};
+        pre_integrations[frame_count] = new IntegrationBase{acc_0, gyr_0, Bas[frame_count], Bgs[frame_count]};//构造了这一阵的预计分项
     }
 
-    if (frame_count != 0)
+    if (frame_count != 0)//这个frame_count是在processImage里面增加的，是一个全局变量，意味着现在是第几帧
     {
-        pre_integrations[frame_count]->push_back(dt, linear_acceleration, angular_velocity);
-        //if(solver_flag != NON_LINEAR)
-            tmp_pre_integration->push_back(dt, linear_acceleration, angular_velocity);
+        //只要一push进去就会执行预积分
+        pre_integrations[frame_count]->push_back(dt, linear_acceleration, angular_velocity);//这一项是滑窗内的一项,这里存储的是图像帧之间的预积分项
+        //tmp_pre_integretion就是为了和图像、时间等分装成一帧数据
+        tmp_pre_integration->push_back(dt, linear_acceleration, angular_velocity);//这一项是和当前帧对应的一项
+        //TODO:这两个预计分有什么不同用处吗？
 
+        //窗口内的速度，加速度和角速度的buf
         dt_buf[frame_count].push_back(dt);
         linear_acceleration_buf[frame_count].push_back(linear_acceleration);
         angular_velocity_buf[frame_count].push_back(angular_velocity);
 
-        int j = frame_count; 
-                
-        Vector3d un_acc_0 = Rs[j] * (acc_0 - Bas[j]) - g;
+        int j = frame_count;
 
-        //采用的是中值积分的传播方式
+        //这里计算的是世界坐标系下的到下一帧中间所有imu的中值积分过程，对应论文汇总的公式5和公式7的组合，Rs[j]就是把j位置的加速度转移到世界下，而且这里是矢量计算，所以可以直接减
+        Vector3d un_acc_0 = Rs[j] * (acc_0 - Bas[j]) - g;
         Vector3d un_gyr = 0.5 * (gyr_0 + angular_velocity) - Bgs[j];
         Rs[j] *= Utility::deltaQ(un_gyr * dt).toRotationMatrix();
         Vector3d un_acc_1 = Rs[j] * (linear_acceleration - Bas[j]) - g;
@@ -120,7 +122,7 @@ void Estimator::processIMU(double dt, const Vector3d &linear_acceleration, const
         Ps[j] += dt * Vs[j] + 0.5 * dt * dt * un_acc;
         Vs[j] += dt * un_acc;
     }
-    acc_0 = linear_acceleration;
+    acc_0 = linear_acceleration;//acc_0和gyr_0是上一时刻的加速度和角速度
     gyr_0 = angular_velocity;
 }
 
@@ -140,10 +142,10 @@ void Estimator::processImage(const map<int, vector<pair<int, Eigen::Matrix<doubl
 
     //添加之前检测到的特征点到feature容器中，计算每一个点跟踪的次数，以及它的视差
     //通过检测两帧之间的视差决定次新帧是否作为关键帧
-    if (f_manager.addFeatureCheckParallax(frame_count, image, td))
-        marginalization_flag = MARGIN_OLD;//=0
+    if (f_manager.addFeatureCheckParallax(frame_count, image, td))//这个函数返回的就是这一帧image是否为关键帧
+        marginalization_flag = MARGIN_OLD;//=0//是的话就边缘化最后一帧
     else
-        marginalization_flag = MARGIN_SECOND_NEW;//=1
+        marginalization_flag = MARGIN_SECOND_NEW;//=1不是的话就边缘化第二新的帧
 
     ROS_DEBUG("this frame is--------------------%s", marginalization_flag ? "reject" : "accept");
     ROS_DEBUG("%s", marginalization_flag ? "Non-keyframe" : "Keyframe");
@@ -153,12 +155,14 @@ void Estimator::processImage(const map<int, vector<pair<int, Eigen::Matrix<doubl
 
     //将图像数据、时间、临时预积分值存到图像帧类中
     ImageFrame imageframe(image, header.stamp.toSec());
-    imageframe.pre_integration = tmp_pre_integration;
-    
+    imageframe.pre_integration = tmp_pre_integration;//tmp_pre_integretion就是为了和图像、时间等分装成一帧数据
+
+    //key是时间戳，val是图像帧
+    //图像帧中保存了图像帧的特征点、时间戳、位姿Rt，预积分对象pre_integration，是否是关键帧。
     all_image_frame.insert(make_pair(header.stamp.toSec(), imageframe));
     
     //更新临时预积分初始值
-    tmp_pre_integration = new IntegrationBase{acc_0, gyr_0, Bas[frame_count], Bgs[frame_count]};
+    tmp_pre_integration = new IntegrationBase{acc_0, gyr_0, Bas[frame_count], Bgs[frame_count]};//用这一帧的图像的初始结果重新生成一个预积分项
 
     if(ESTIMATE_EXTRINSIC == 2)//如果没有外参则进行标定
     {
@@ -296,17 +300,17 @@ bool Estimator::initialStructure()
     Vector3d T[frame_count + 1];
     map<int, Vector3d> sfm_tracked_points;
     vector<SFMFeature> sfm_f;
-    for (auto &it_per_id : f_manager.feature)
+    for (auto &it_per_id : f_manager.feature)//这个里面保存的是所有的窗口内看到的feature
     {
-        int imu_j = it_per_id.start_frame - 1;
-        SFMFeature tmp_feature;
+        int imu_j = it_per_id.start_frame - 1;//imu_j记录的是第一次看到该特征点的帧的id
+        SFMFeature tmp_feature;//SFMFeature主要记录的是每个路标点由多个连续的图像观测到
         tmp_feature.state = false;
         tmp_feature.id = it_per_id.feature_id;
-        for (auto &it_per_frame : it_per_id.feature_per_frame)
+        for (auto &it_per_frame : it_per_id.feature_per_frame)//遍历了这个看到这个路标点图像帧，但是feature_per_frame存的只是路标点到再这个图像帧的点的信息
         {
             imu_j++;
             Vector3d pts_j = it_per_frame.point;
-            tmp_feature.observation.push_back(make_pair(imu_j, Eigen::Vector2d{pts_j.x(), pts_j.y()}));
+            tmp_feature.observation.push_back(make_pair(imu_j, Eigen::Vector2d{pts_j.x(), pts_j.y()}));//最后构成的SFMFeature就是一个路标点被观察到的图像帧以及在这帧中的信息
         }
         sfm_f.push_back(tmp_feature);
     } 
@@ -340,8 +344,8 @@ bool Estimator::initialStructure()
     //对于所有的图像帧，包括不在滑动窗口中的，提供初始的RT估计，然后solvePnP进行优化,得到每一帧的姿态
     map<double, ImageFrame>::iterator frame_it;
     map<int, Vector3d>::iterator it;
-    frame_it = all_image_frame.begin( );
-    for (int i = 0; frame_it != all_image_frame.end( ); frame_it++)
+    frame_it = all_image_frame.begin( );//从最开始的一帧开始
+    for (int i = 0; frame_it != all_image_frame.end( ); frame_it++)//这个循环是对每一帧处理
     {
         cv::Mat r, rvec, t, D, tmp_r;
         if((frame_it->first) == Headers[i].stamp.toSec())
@@ -374,13 +378,13 @@ bool Estimator::initialStructure()
             for (auto &i_p : id_pts.second)
             {
                 it = sfm_tracked_points.find(feature_id);
-                if(it != sfm_tracked_points.end())
+                if(it != sfm_tracked_points.end())//找到sfm出来的三维点
                 {
                     Vector3d world_pts = it->second;
-                    cv::Point3f pts_3(world_pts(0), world_pts(1), world_pts(2));
+                    cv::Point3f pts_3(world_pts(0), world_pts(1), world_pts(2));//三维空间点
                     pts_3_vector.push_back(pts_3);
                     Vector2d img_pts = i_p.second.head<2>();
-                    cv::Point2f pts_2(img_pts(0), img_pts(1));
+                    cv::Point2f pts_2(img_pts(0), img_pts(1));//图像帧上的点
                     pts_2_vector.push_back(pts_2);
                 }
             }
@@ -418,7 +422,7 @@ bool Estimator::initialStructure()
         MatrixXd T_pnp;
         cv::cv2eigen(t, T_pnp);
         T_pnp = R_pnp * (-T_pnp);
-        frame_it->second.R = R_pnp * RIC[0].transpose();
+        frame_it->second.R = R_pnp * RIC[0].transpose();//这里就应该是全部变换成以第一帧为参考系的位姿
         frame_it->second.T = T_pnp;
     }
 
@@ -446,7 +450,7 @@ bool Estimator::visualInitialAlign()
     VectorXd x;
 
     //计算陀螺仪偏置，尺度，重力加速度和速度
-    bool result = VisualIMUAlignment(all_image_frame, Bgs, g, x);
+    bool result = VisualIMUAlignment(all_image_frame, Bgs, g, x);//这里的all_image_frame应该是都具备准确的位姿
     if(!result)
     {
         ROS_DEBUG("solve g failed!");
@@ -473,16 +477,16 @@ bool Estimator::visualInitialAlign()
     Vector3d TIC_TMP[NUM_OF_CAM];
     for(int i = 0; i < NUM_OF_CAM; i++)
         TIC_TMP[i].setZero();
-    ric[0] = RIC[0];
+    ric[0] = RIC[0];//这个RIC是之前PnP步骤中标定了从相机到IMU的旋转，平移好像不太重要
     f_manager.setRic(ric);
-    f_manager.triangulate(Ps, &(TIC_TMP[0]), &(RIC[0]));
+    f_manager.triangulate(Ps, &(TIC_TMP[0]), &(RIC[0]));//ric是从camera到IMU之间的旋转矩阵
 
     double s = (x.tail<1>())(0);
 
     //陀螺仪的偏置bgs改变，重新计算预积分
     for (int i = 0; i <= WINDOW_SIZE; i++)
     {
-        pre_integrations[i]->repropagate(Vector3d::Zero(), Bgs[i]);
+        pre_integrations[i]->repropagate(Vector3d::Zero(), Bgs[i]);//默认加速度偏置为零
     }
     
     //将Ps、Vs、depth尺度s缩放
@@ -585,7 +589,7 @@ void Estimator::solveOdometry()
     if (solver_flag == NON_LINEAR)
     {
         TicToc t_tri;
-        f_manager.triangulate(Ps, tic, ric);
+        f_manager.triangulate(Ps, tic, ric);//TODO:这个tic的具体值不知道是在哪里求的
         ROS_DEBUG("triangulation costs %f", t_tri.toc());
         optimization();
     }
@@ -813,7 +817,7 @@ void Estimator::optimization()
     {
         ceres::LocalParameterization *local_parameterization = new PoseLocalParameterization();
         problem.AddParameterBlock(para_Ex_Pose[i], SIZE_POSE, local_parameterization);
-        if (!ESTIMATE_EXTRINSIC)
+        if (!ESTIMATE_EXTRINSIC)//外参如果确定了就不再做优化，如果不确定就需要进一步优化
         {
             ROS_DEBUG("fix extinsic param");
             problem.SetParameterBlockConstant(para_Ex_Pose[i]);
@@ -824,7 +828,7 @@ void Estimator::optimization()
     //相机和IMU硬件不同步时估计两者的时间偏差
     if (ESTIMATE_TD)
     {
-        problem.AddParameterBlock(para_Td[0], 1);
+        problem.AddParameterBlock(para_Td[0], 1);//居然还有一个时间优化变量
         //problem.SetParameterBlockConstant(para_Td[0]);
     }
 
@@ -939,6 +943,7 @@ void Estimator::optimization()
 
     ceres::Solver::Options options;
 
+    //这一部分是设置
     options.linear_solver_type = ceres::DENSE_SCHUR;
     //options.num_threads = 2;
     options.trust_region_strategy_type = ceres::DOGLEG;
@@ -951,13 +956,15 @@ void Estimator::optimization()
     else
         options.max_solver_time_in_seconds = SOLVER_TIME;
     TicToc t_solver;
+
+    //这一部分开始求解
     ceres::Solver::Summary summary;
     ceres::Solve(options, &problem, &summary);
     //cout << summary.BriefReport() << endl;
     ROS_DEBUG("Iterations : %d", static_cast<int>(summary.iterations.size()));
     ROS_DEBUG("solver costs: %f", t_solver.toc());
 
-    double2vector();
+    double2vector();//这里会把优化后的结果恢复回去
 
     TicToc t_whole_marginalization;
 
@@ -1195,8 +1202,8 @@ void Estimator::slideWindow()
             Bas[WINDOW_SIZE] = Bas[WINDOW_SIZE - 1];
             Bgs[WINDOW_SIZE] = Bgs[WINDOW_SIZE - 1];
 
-            delete pre_integrations[WINDOW_SIZE];
-            pre_integrations[WINDOW_SIZE] = new IntegrationBase{acc_0, gyr_0, Bas[WINDOW_SIZE], Bgs[WINDOW_SIZE]};
+            delete pre_integrations[WINDOW_SIZE];//删除掉最后一格预积分
+            pre_integrations[WINDOW_SIZE] = new IntegrationBase{acc_0, gyr_0, Bas[WINDOW_SIZE], Bgs[WINDOW_SIZE]};//创建新的一格预积分
 
             dt_buf[WINDOW_SIZE].clear();
             linear_acceleration_buf[WINDOW_SIZE].clear();
@@ -1299,7 +1306,7 @@ void Estimator::setReloFrame(double _frame_stamp, int _frame_index, vector<Vecto
     match_points = _match_points;
     prev_relo_t = _relo_t;
     prev_relo_r = _relo_r;
-    for(int i = 0; i < WINDOW_SIZE; i++)
+    for(int i = 0; i < WINDOW_SIZE; i++)//在当前窗口内寻找重定位帧，因为此时这个线程里面的当前帧不一定是闭环帧了
     {
         if(relo_frame_stamp == Headers[i].stamp.toSec())
         {

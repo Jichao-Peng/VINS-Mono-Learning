@@ -36,10 +36,10 @@ KeyFrame::KeyFrame(double _time_stamp, int _index, Vector3d &_vio_T_w_i, Matrix3
 	has_fast_point = false;
 	loop_info << 0, 0, 0, 0, 0, 0, 0, 0;
 	sequence = _sequence;
-	computeWindowBRIEFPoint();
-	computeBRIEFPoint();
+	computeWindowBRIEFPoint();//这一步是提取前端提取的关键点的特征描述子
+	computeBRIEFPoint();//这一步是新提取500个Fast关键点，并提取他们的特征描述子
 	if(!DEBUG_IMAGE)
-		image.release();
+		image.release();//提取完之后这个图片就不要了
 }
 
 //载入先前关键帧
@@ -124,7 +124,7 @@ void KeyFrame::computeBRIEFPoint()
 		Eigen::Vector3d tmp_p;
 		m_camera->liftProjective(Eigen::Vector2d(keypoints[i].pt.x, keypoints[i].pt.y), tmp_p);
 		cv::KeyPoint tmp_norm;
-		tmp_norm.pt = cv::Point2f(tmp_p.x()/tmp_p.z(), tmp_p.y()/tmp_p.z());
+		tmp_norm.pt = cv::Point2f(tmp_p.x()/tmp_p.z(), tmp_p.y()/tmp_p.z());//转到归一化片面
 		keypoints_norm.push_back(tmp_norm);
 	}
 }
@@ -564,7 +564,7 @@ bool KeyFrame::findConnection(KeyFrame* old_kf)
 			    t_q_index.values.push_back(Q.z());
 			    t_q_index.values.push_back(index);
 			    msg_match_points.channels.push_back(t_q_index);
-			    pub_match_points.publish(msg_match_points);
+			    pub_match_points.publish(msg_match_points);//将当前帧和闭环帧匹配的点发出去，vins estimate会接受并进行处理
 	    	}
 	        return true;
 	    }
